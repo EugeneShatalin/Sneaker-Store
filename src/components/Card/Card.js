@@ -1,8 +1,9 @@
 import React from "react";
+import styles from './Card.module.scss'
 
 function Card(props) {
-    return <div className="card">
-        <div className="favorite">
+    return <div className={styles.card}>
+        <div className={styles.favorite}>
             <img src="/img/heart-unliked.svg" alt="Unliked"/>
         </div>
 
