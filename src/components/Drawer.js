@@ -1,10 +1,16 @@
 import React from "react";
 
-function Header() {
-    return   <div style={{display: 'none'}} className="overlay">
+function Drawer(props) {
+    return <div className="overlay">
         <div className="drawer d-flex flex-column">
-            <h2 className="mb-30 d-flex justify-between ">Корзина <img className="cu-p" src="/img/remove.svg"
-                                                                       alt="Remove"/></h2>
+            <h2 className="mb-30 d-flex justify-between ">
+                Корзина
+                <img className="cu-p"
+                     src="/img/remove.svg"
+                     alt="Remove"
+                     onClick={props.onClose}
+                />
+            </h2>
 
             <div className="items flex">
                 <div className="cartItem d-flex align-center mb-20">
@@ -90,4 +96,4 @@ function Header() {
     </div>
 }
 
-export default Header;
+export default Drawer;
