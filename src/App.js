@@ -7,7 +7,7 @@ function App() {
     const [cartOpened, setCartOpened] = useState(false)
     const [items, setItems] = useState([])
     const [cartItems, setCartItems] = useState([])
-
+    const [searchValue, setSearchValue] = useState('')
 
 
     useEffect(() => {
@@ -21,8 +21,15 @@ function App() {
     }, [])
 
     const onAddToCart = (obj) => {
-        setCartItems([...cartItems, obj])
+        setCartItems((prev) => [...prev, obj])
+    }
 
+    const onChangeSearchInput = (event) => {
+        setSearchValue(event.target.value)
+    }
+
+    const onClearSearch = () => {
+        setSearchValue('')
     }
 
     return (
@@ -33,25 +40,33 @@ function App() {
 
             <div className="content p-40">
                 <div className="d-flex align-center justify-between mb-40">
-                    <h1 className="">Все кросовки</h1>
+                    <h1 className="">{searchValue ? `Поисе по запросу: ${searchValue}` : `Все кросовки`}</h1>
                     <div className="search-block">
                         <img src="/img/search.svg" alt="Search"/>
-                        <input placeholder="Поиск..."/>
+                        {searchValue &&
+                            <img className="clear cu-p" src="/img/remove.svg" alt="Clear" onClick={onClearSearch}/>}
+                        <input
+                            onChange={onChangeSearchInput}
+                            placeholder="Поиск..."
+                            value={searchValue}
+                        />
                     </div>
                 </div>
 
                 <div className="d-flex flex-wrap">
                     {
-                        items.map((item, index) => {
-                            return <Card
-                                key={index}
-                                title={item.title}
-                                price={item.price}
-                                imageUrl={item.imageUrl}
-                                onFavorite={() => console.log("Избранное")}
-                                onPlus={(obg) => onAddToCart(obg)}
-                            />
-                        })
+                        items
+                            .filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()))
+                            .map((item, index) => {
+                                return <Card
+                                    key={index}
+                                    title={item.title}
+                                    price={item.price}
+                                    imageUrl={item.imageUrl}
+                                    onFavorite={() => console.log("Избранное")}
+                                    onPlus={(obg) => onAddToCart(obg)}
+                                />
+                            })
                     }
                 </div>
 
