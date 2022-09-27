@@ -22,7 +22,7 @@ function App() {
 
     const onAddToCart = (obj) => {
         setCartItems([...cartItems, obj])
-        console.log(cartItems)
+
     }
 
     return (
@@ -42,8 +42,9 @@ function App() {
 
                 <div className="d-flex flex-wrap">
                     {
-                        items.map(item => {
+                        items.map((item, index) => {
                             return <Card
+                                key={index}
                                 title={item.title}
                                 price={item.price}
                                 imageUrl={item.imageUrl}
