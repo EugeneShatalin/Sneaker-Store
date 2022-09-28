@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Card from "./components/Card/Card";
 import Header from "./components/Header";
 import Drawer from "./components/Drawer";
+import axios from "axios";
 
 function App() {
     const [cartOpened, setCartOpened] = useState(false)
@@ -11,16 +12,14 @@ function App() {
 
 
     useEffect(() => {
-        fetch('https://63300eb8591935f3c8891554.mockapi.io/items')
+        axios.get('https://63300eb8591935f3c8891554.mockapi.io/items')
             .then((res) => {
-                return res.json();
-            })
-            .then((json) => {
-                setItems(json)
+                setItems(res.data)
             })
     }, [])
 
     const onAddToCart = (obj) => {
+        axios.post('https://63300eb8591935f3c8891554.mockapi.io/cart', obj)
         setCartItems((prev) => [...prev, obj])
     }
 
