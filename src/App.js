@@ -16,6 +16,10 @@ function App() {
             .then((res) => {
                 setItems(res.data)
             })
+        axios.get('https://63300eb8591935f3c8891554.mockapi.io/cart')
+            .then((res) => {
+                setCartItems(res.data)
+            })
     }, [])
 
     const onAddToCart = (obj) => {
