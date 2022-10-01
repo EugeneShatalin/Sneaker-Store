@@ -8,6 +8,7 @@ function App() {
     const [cartOpened, setCartOpened] = useState(false)
     const [items, setItems] = useState([])
     const [cartItems, setCartItems] = useState([])
+    const [favorites, setFavorites] = useState([])
     const [searchValue, setSearchValue] = useState('')
 
 
@@ -30,6 +31,11 @@ function App() {
     const onRemoveItem = (id) => {
         axios.delete(`https://63300eb8591935f3c8891554.mockapi.io/cart/${id}`)
         setCartItems((prev) => prev.filter(item => item.id !== id))
+    }
+
+    const onAddToFavorite = (obj) => {
+        axios.post('https://63300eb8591935f3c8891554.mockapi.io/favorites', obj)
+        setFavorites((prev) => [...prev, obj])
     }
 
     const onChangeSearchInput = (event) => {
@@ -71,7 +77,7 @@ function App() {
                                     title={item.title}
                                     price={item.price}
                                     imageUrl={item.imageUrl}
-                                    onFavorite={() => console.log("Избранное")}
+                                    onFavorite={(obg) => onAddToFavorite(obg)}
                                     onPlus={(obg) => onAddToCart(obg)}
                                 />
                             })
