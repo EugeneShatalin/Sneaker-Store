@@ -40,13 +40,18 @@ function App() {
     }
 
     const onAddToFavorite = async (obj) => {
-        if(favorites.find(item => item.id === obj.id)) {
-            axios.delete(`https://63300eb8591935f3c8891554.mockapi.io/favorites/${obj.id}`)
-            setCartItems((prev) => prev.filter(item => item.id !== obj.id))
-        } else {
-            const {data} = await axios.post('https://63300eb8591935f3c8891554.mockapi.io/favorites', obj)
-            setFavorites((prev) => [...prev, data])
+        try {
+            if(favorites.find(item => item.id === obj.id)) {
+                axios.delete(`https://63300eb8591935f3c8891554.mockapi.io/favorites/${obj.id}`)
+                setCartItems((prev) => prev.filter(item => item.id !== obj.id))
+            } else {
+                const {data} = await axios.post('https://63300eb8591935f3c8891554.mockapi.io/favorites', obj)
+                setFavorites((prev) => [...prev, data])
+            }
+        } catch (e) {
+            alert("Не удалось добавить в Избраное")
         }
+
     }
 
     const onChangeSearchInput = (event) => {
