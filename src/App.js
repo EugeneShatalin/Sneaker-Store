@@ -12,18 +12,22 @@ function App() {
     const [cartItems, setCartItems] = useState([])
     const [favorites, setFavorites] = useState([])
     const [searchValue, setSearchValue] = useState('')
+    const [isLoading, setIsLoading] = useState(true)
 
 
     useEffect(() => {
-       async function fetchData() {
-           const cartResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/cart')
-           const favoritesResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/favorites')
-           const itemsResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/items')
+        async function fetchData() {
+            const cartResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/cart')
+            const favoritesResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/favorites')
+            const itemsResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/items')
 
-           setCartItems(cartResponse.data)
-           setFavorites(favoritesResponse.data)
-           setItems(itemsResponse.data)
-       }
+            setIsLoading(false)
+
+            setCartItems(cartResponse.data)
+            setFavorites(favoritesResponse.data)
+            setItems(itemsResponse.data)
+        }
+
         fetchData()
     }, [])
 
@@ -73,14 +77,19 @@ function App() {
 
 
             <Routes>
-                <Route path="/" element={<Home
-                    items={items}
-                    searchValue={searchValue}
-                    onChangeSearchInput={onChangeSearchInput}
-                    onAddToFavorite={onAddToFavorite}
-                    onAddToCart={onAddToCart}
-                    onClearSearch={onClearSearch}
-                    cartItems={cartItems}/>}
+                <Route path="/" element={
+                    <Home
+                        items={items}
+                        searchValue={searchValue}
+                        setSearchValue={setSearchValue}
+                        onChangeSearchInput={onChangeSearchInput}
+                        onAddToFavorite={onAddToFavorite}
+                        onAddToCart={onAddToCart}
+                        onClearSearch={onClearSearch}
+                        cartItems={cartItems}
+                        isLoading={isLoading}
+                    />
+                }
                 />
 
                 <Route path="/favorites" element={<Favorites items={favorites} onAddToFavorite={onAddToFavorite}/>}/>
