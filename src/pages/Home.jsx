@@ -1,7 +1,10 @@
 import Card from "../components/Card/Card";
 import React from "react";
 
-function Home({items, searchValue, onChangeSearchInput, onAddToFavorite, onAddToCart, onClearSearch}) {
+function Home({items, searchValue, onChangeSearchInput, onAddToFavorite, onAddToCart, onClearSearch, cartItems}) {
+
+    console.log(cartItems);
+    console.log(items);
     return (
         <div className="content p-40">
             <div className="d-flex align-center justify-between mb-40">
@@ -25,11 +28,10 @@ function Home({items, searchValue, onChangeSearchInput, onAddToFavorite, onAddTo
                         .map((item, index) => {
                             return <Card
                                 key={index}
-                                title={item.title}
-                                price={item.price}
-                                imageUrl={item.imageUrl}
                                 onFavorite={(obg) => onAddToFavorite(obg)}
                                 onPlus={(obg) => onAddToCart(obg)}
+                                added={cartItems.some(obj => Number(obj.id) === Number(item.id))}
+                                {...item}
                             />
                         })
                 }
