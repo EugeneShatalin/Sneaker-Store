@@ -1,6 +1,10 @@
-import React from "react";
+import React, {useContext} from "react";
+import {AppContext} from "../App";
 
-function Drawer({onClose, items, onRemove = []}) {
+function Drawer({onClose, onRemove = []}) {
+
+    const {cartItems} = useContext(AppContext)
+
     return <div className="overlay">
         <div className="drawer d-flex flex-column">
             <h2 className="mb-30 d-flex justify-between ">
@@ -14,7 +18,7 @@ function Drawer({onClose, items, onRemove = []}) {
 
             <div className="items flex">
                 {
-                    items.map((obj) => (
+                    cartItems.map((obj) => (
                         <div key={obj.id} className="cartItem d-flex align-center mb-20">
                             <div style={{backgroundImage: `url(${obj.imageUrl})`}}
                                  className="cartItemImg"
