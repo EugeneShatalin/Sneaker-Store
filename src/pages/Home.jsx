@@ -11,18 +11,18 @@ function Home({
                   isLoading,
               }) {
 
-    const {items, cartItems} = useContext(AppContext)
+    const {items} = useContext(AppContext)
 
     const renderItems = () => {
         const filtredItems = items.filter((item) =>
             item.title.toLowerCase().includes(searchValue.toLowerCase()),
         );
+
         return (isLoading ? [...Array(8)] : filtredItems).map((item, index) => (
             <Card
                 key={index}
                 onFavorite={(obg) => onAddToFavorite(obg)}
                 onPlus={(obg) => onAddToCart(obg)}
-                added={cartItems.some(obj => Number(obj.id) === Number(item.id))}
                 loading={isLoading}
                 {...item}
             />

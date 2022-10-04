@@ -50,7 +50,7 @@ function App() {
 
     const onAddToFavorite = async (obj) => {
         try {
-            if (favorites.find(item => item.id === obj.id)) {
+            if (favorites.find(item => Number( item.id) === Number(obj.id))) {
                 axios.delete(`https://63300eb8591935f3c8891554.mockapi.io/favorites/${obj.id}`)
                 setCartItems((prev) => prev.filter(item => item.id !== obj.id))
             } else {
@@ -71,8 +71,12 @@ function App() {
         setSearchValue('')
     }
 
+    const isItemAdded = (id) => {
+        return cartItems.some(obj => Number(obj.id) === Number(id))
+    }
+
     return (
-        <AppContext.Provider value={{items, cartItems, favorites}}>
+        <AppContext.Provider value={{items, cartItems, favorites, isItemAdded}}>
             <div className="wrapper clear">
 
                 {cartOpened && <Drawer onClose={() => setCartOpened(false)} onRemove={onRemoveItem}/>}
