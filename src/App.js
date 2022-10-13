@@ -20,38 +20,55 @@ function App() {
 
     useEffect(() => {
         async function fetchData() {
-            const cartResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/cart')
-            const favoritesResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/favorites')
-            const itemsResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/items')
+            try {
+                const cartResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/cart')
+                const favoritesResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/favorites')
+                const itemsResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/items')
 
-            setIsLoading(false)
+                setIsLoading(false)
 
-            setCartItems(cartResponse.data)
-            setFavorites(favoritesResponse.data)
-            setItems(itemsResponse.data)
+                setCartItems(cartResponse.data)
+                setFavorites(favoritesResponse.data)
+                setItems(itemsResponse.data)
+            } catch (e) {
+                alert('Ошибка при запросе данных')
+                console.log(e)
+            }
         }
 
         fetchData()
     }, [])
 
-    const onAddToCart = (obj) => {
-        if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
-            axios.delete(`https://63300eb8591935f3c8891554.mockapi.io/cart/${obj.id}`)
-            setCartItems((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)))
-        } else {
-            axios.post('https://63300eb8591935f3c8891554.mockapi.io/cart', obj)
-            setCartItems((prev) => [...prev, obj])
+    const onAddToCart = async (obj) => {
+        try {
+            if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
+                setCartItems((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)))
+                await axios.delete(`https://63300eb8591935f3c8891554.mockapi.io/cart/${obj.id}`)
+            } else {
+                setCartItems((prev) => [...prev, obj])
+                await axios.post('https://63300eb8591935f3c8891554.mockapi.io/cart', obj)
+            }
+        } catch (e) {
+            alert('Ошибка при добавлении в корзину')
+            console.log(e)
         }
+
     }
 
     const onRemoveItem = (id) => {
-        axios.delete(`https://63300eb8591935f3c8891554.mockapi.io/cart/${id}`)
-        setCartItems((prev) => prev.filter((item) => item.id !== id))
+        try {
+            axios.delete(`https://63300eb8591935f3c8891554.mockapi.io/cart/${id}`)
+            setCartItems((prev) => prev.filter((item) => item.id !== id))
+        } catch (e) {
+            alert('Ошибка при удалении из корзины')
+            console.log(e)
+        }
+
     }
 
     const onAddToFavorite = async (obj) => {
         try {
-            if (favorites.find(item => Number( item.id) === Number(obj.id))) {
+            if (favorites.find(item => Number(item.id) === Number(obj.id))) {
                 axios.delete(`https://63300eb8591935f3c8891554.mockapi.io/favorites/${obj.id}`)
                 setCartItems((prev) => prev.filter(item => item.id !== obj.id))
             } else {
@@ -77,7 +94,16 @@ function App() {
     }
 
     return (
-        <AppContext.Provider value={{items, cartItems, favorites, isItemAdded, setCartOpened, setCartItems, onAddToFavorite, onAddToCart}}>
+        <AppContext.Provider value={{
+            items,
+            cartItems,
+            favorites,
+            isItemAdded,
+            setCartOpened,
+            setCartItems,
+            onAddToFavorite,
+            onAddToCart
+        }}>
             <div className="wrapper clear">
 
                 <Drawer onClose={() => setCartOpened(false)}
@@ -101,10 +127,10 @@ function App() {
                     />
 
                     <Route path="/favorites"
-                           element={<Favorites />}/>
+                           element={<Favorites/>}/>
 
                     <Route path="/orders"
-                           element={<Orders />}/>
+                           element={<Orders/>}/>
 
                 </Routes>
 

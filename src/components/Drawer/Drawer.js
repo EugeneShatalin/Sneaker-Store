@@ -33,6 +33,7 @@ function Drawer({onClose, onRemove = [], opened}) {
         catch (e) {
             console.log(e)
             alert("Ошибка при создании заказа :(")
+            console.log(e)
         }
         setIsLoading(false)
     }
