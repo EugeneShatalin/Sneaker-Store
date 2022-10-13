@@ -1,6 +1,6 @@
 import React, {createContext, useEffect, useState} from 'react';
 import Header from "./components/Header";
-import Drawer from "./components/Drawer";
+import Drawer from "./components/Drawer/Drawer";
 import axios from "axios";
 import Home from "./pages/Home";
 import {Route, Routes} from "react-router-dom";
@@ -80,7 +80,9 @@ function App() {
         <AppContext.Provider value={{items, cartItems, favorites, isItemAdded, setCartOpened, setCartItems, onAddToFavorite, onAddToCart}}>
             <div className="wrapper clear">
 
-                {cartOpened && <Drawer onClose={() => setCartOpened(false)} onRemove={onRemoveItem}/>}
+                <Drawer onClose={() => setCartOpened(false)}
+                        onRemove={onRemoveItem}
+                        opened={cartOpened}/>
                 <Header onClickCart={() => setCartOpened(true)}/>
 
 
