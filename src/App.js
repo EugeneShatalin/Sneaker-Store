@@ -21,9 +21,11 @@ function App() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const cartResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/cart')
-                const favoritesResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/favorites')
-                const itemsResponse = await axios.get('https://63300eb8591935f3c8891554.mockapi.io/items')
+                const [cartResponse, favoritesResponse, itemsResponse] = await Promise.all([
+                    axios.get('https://63300eb8591935f3c8891554.mockapi.io/cart'),
+                    axios.get('https://63300eb8591935f3c8891554.mockapi.io/favorites'),
+                    axios.get('https://63300eb8591935f3c8891554.mockapi.io/items')
+                ])
 
                 setIsLoading(false)
 
@@ -77,6 +79,7 @@ function App() {
             }
         } catch (e) {
             alert("Не удалось добавить в Избраное")
+            console.log(e)
         }
 
     }
