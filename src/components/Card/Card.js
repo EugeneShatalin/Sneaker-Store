@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import styles from './Card.module.scss'
 import ContentLoader from "react-content-loader"
 import {AppContext} from "../../App";
@@ -6,25 +6,37 @@ import {AppContext} from "../../App";
 function Card(
     {
         id,
+        parentId,
         onFavorite,
         title,
         price,
         imageUrl,
         onPlus,
-        favorited = false,
         loading = false,
     }) {
 
-    const {isItemAdded} = useContext(AppContext)
-    const [isFavorite, setIsFavorite] = useState(favorited)
+    const {isItemAdded, favorites} = useContext(AppContext)
+    const [isFavorite, setIsFavorite] = useState(false)
+    const [clickFavorite, setClickFavorite] = useState(true)
+
+
+    useEffect(() => {
+        const findItem = favorites.find(item => item.parentId === parentId)
+        if(findItem) {
+            setIsFavorite(true)
+        }
+    }, [favorites])
+
+
+    const obj = {id, parentId: id, title, price, imageUrl}
 
     const onClickPlus = () => {
-        onPlus({id, title, price, imageUrl})
+            onPlus(obj)
     }
 
     const onClickFavorite = () => {
-        setIsFavorite(!isFavorite)
-        onFavorite({id, title, price, imageUrl})
+            setIsFavorite(!isFavorite)
+            onFavorite(obj)
     }
 
     return <div className={styles.card}>
@@ -44,7 +56,7 @@ function Card(
             </ContentLoader>
         ) : (
             <>
-                {onFavorite && (<div className={styles.favorite} onClick={onClickFavorite}>
+                {onFavorite && (<div className={clickFavorite ? styles.favorite : styles.favorite + styles.disableClick} onClick={onClickFavorite} >
                     <img src={isFavorite ? "/img/heart-liked.svg" : "/img/heart-unliked.svg"}
                          alt="Unliked"
                     />

@@ -47,7 +47,7 @@ function Drawer({onClose, onRemove = [], opened}) {
 
                 {cartItems.length > 0 ? (
                     <div className="flex flex-column d-flex">
-                        <div className="items">
+                        <div className="items flex">
                             {cartItems.map((obj) => (
                                 <div className="cartItem d-flex align-center mb-20">
                                     <div
@@ -77,7 +77,7 @@ function Drawer({onClose, onRemove = [], opened}) {
                                 <li>
                                     <span>Налог 5%:</span>
                                     <div></div>
-                                    <b>{totalPrice*0.05} руб. </b>
+                                    <b>{(totalPrice*0.05).toFixed(2)} руб. </b>
                                 </li>
                             </ul>
                             <button disabled={isLoading} onClick={onClickOrder} className="greenButton">

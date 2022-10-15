@@ -6,6 +6,8 @@ function Favorites() {
 
     const {favorites, onAddToFavorite} = useContext(AppContext)
 
+    console.log(favorites)
+
     return (
         <div className="content p-40">
             <div className="d-flex align-center justify-between mb-40">
@@ -16,7 +18,6 @@ function Favorites() {
                 favorites.map((item, index) => {
                         return <Card
                             key={index}
-                            favorited={true}
                             onFavorite={onAddToFavorite}
                             {...item}
                         />
